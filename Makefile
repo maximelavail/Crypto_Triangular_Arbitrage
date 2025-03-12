@@ -13,11 +13,27 @@ CXX = g++
 # Options de compilation
 CXXFLAGS = -std=c++17 -Wall -Wextra -O2
 
-# Dépendances Homebrew (Boost et OpenSSL)
-BOOST_INCLUDE = $(shell brew --prefix boost)/include
-BOOST_LIB = $(shell brew --prefix boost)/lib
-OPENSSL_INCLUDE = $(shell brew --prefix openssl)/include
-OPENSSL_LIB = $(shell brew --prefix openssl)/lib
+# Détection automatique du système d'exploitation et configuration des dépendances
+UNAME_S := $(shell uname -s)
+
+ifeq ($(UNAME_S), Darwin)  # macOS
+    BOOST_INCLUDE := $(shell brew --prefix boost)/include
+    BOOST_LIB := $(shell brew --prefix boost)/lib
+    OPENSSL_INCLUDE := $(shell brew --prefix openssl)/include
+    OPENSSL_LIB := $(shell brew --prefix openssl)/lib
+else ifeq ($(shell which apt 2>/dev/null), /usr/bin/apt)  # Debian/Ubuntu
+    BOOST_INCLUDE := /usr/include
+    BOOST_LIB := /usr/lib
+    OPENSSL_INCLUDE := /usr/include
+    OPENSSL_LIB := /usr/lib
+else ifeq ($(shell which pacman 2>/dev/null), /usr/bin/pacman)  # Arch Linux
+    BOOST_INCLUDE := /usr/include
+    BOOST_LIB := /usr/lib
+    OPENSSL_INCLUDE := /usr/include
+    OPENSSL_LIB := /usr/lib
+else
+    $(error ❌ Système non supporté. Installez Boost et OpenSSL manuellement.)
+endif
 
 # Options d'inclusion et de liaison
 INCLUDES = -I$(BOOST_INCLUDE) -I$(OPENSSL_INCLUDE) -I$(INC_DIR)
@@ -45,7 +61,3 @@ $(BIN_DIR):
 # Nettoyage
 clean:
 	rm -rf $(BUILD_DIR) $(BIN_DIR)
-
-# Nettoyage complet (y compris les bibliothèques téléchargées)
-distclean: clean
-	rm -rf libs/

@@ -6,11 +6,11 @@ Crypto Triangular Arbitrage is a C++ project that retrieves Binance order book d
 ## 🛠️ Installation  
 
 ### 1️⃣ Install Dependencies  
-To install all necessary dependencies (Boost, OpenSSL, WebSocket++, etc.), simply run:  
+To install all necessary dependencies (Boost, OpenSSL, etc.), simply run:  
 ```bash
 ./install.sh
 ```
-This script will download and compile the required libraries in the `libs/` directory.  
+This script will download the required libraries.
 
 ### 2️⃣ Compile the Project  
 Once the dependencies are installed, compile the project using:  
@@ -30,10 +30,6 @@ To start the application, execute:
 - To remove compiled files:  
   ```bash
   make clean
-  ```
-- To completely remove dependencies and compiled files:  
-  ```bash
-  make distclean
   ```
 
 ## 📜 License  
